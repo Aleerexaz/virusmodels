@@ -95,6 +95,7 @@ export default function Slide4Predictions() {
   const [activeSection, setActiveSection] = useState<'r0' | 'peak' | 'security'>('r0');
   const [betaValue, setBetaValue] = useState(0.0004);
   const [gammaValue, setGammaValue] = useState(0.1);
+  const [isGraphFullscreen, setIsGraphFullscreen] = useState(false);
 
   const r0 = useMemo(() => betaValue / gammaValue * 5000, [betaValue, gammaValue]);
 
@@ -156,12 +157,12 @@ export default function Slide4Predictions() {
 
       {/* Split Layout - Stack on mobile */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-        {/* Left Panel - Content */}
+        {/* Left Panel - Content - Scrollable on mobile - Hide when fullscreen */}
         <motion.div 
           initial={{ x: -50, opacity: 0 }} 
           animate={{ x: 0, opacity: 1 }} 
           transition={{ delay: 0.2 }}
-          className="w-full md:w-5/12 flex flex-col"
+          className={`w-full md:w-5/12 flex flex-col max-h-[40vh] md:max-h-none ${isGraphFullscreen ? 'hidden md:flex' : ''}`}
         >
           <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-3 md:space-y-4 bg-gradient-to-br from-slate-900/40 to-slate-800/20 backdrop-blur-sm border-b md:border-b-0 md:border-r border-white/5">
           {activeSection === 'r0' && (
@@ -521,15 +522,31 @@ export default function Slide4Predictions() {
           </div>
         </motion.div>
 
-        {/* Right Panel - 3D Visualization */}
+        {/* Right Panel - 3D Visualization - Larger on mobile */}
         <motion.div 
           initial={{ x: 50, opacity: 0 }} 
           animate={{ x: 0, opacity: 1 }} 
           transition={{ delay: 0.3 }}
-          className="flex-1 relative bg-slate-950"
-          style={{ minHeight: '600px' }}
+          className={`flex-1 relative bg-slate-950 ${isGraphFullscreen ? 'fixed inset-0 z-50 md:relative' : ''}`}
+          style={{ minHeight: isGraphFullscreen ? '100vh' : '600px' }}
         >
-          <div className="absolute inset-0" style={{ zIndex: 0, background: '#030712', minHeight: '600px' }}>
+          {/* Fullscreen Toggle Button - Mobile Only */}
+          <button
+            onClick={() => setIsGraphFullscreen(!isGraphFullscreen)}
+            className="md:hidden absolute top-2 right-2 z-20 p-2 rounded-lg bg-yellow-500/90 hover:bg-yellow-600 text-white shadow-lg backdrop-blur"
+          >
+            {isGraphFullscreen ? (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+              </svg>
+            )}
+          </button>
+          
+          <div className="absolute inset-0" style={{ zIndex: 0, background: '#030712', minHeight: isGraphFullscreen ? '100vh' : '600px' }}>
             <Canvas 
               camera={{ position: [8, 5, 8], fov: 50 }}
               className="w-full h-full"
@@ -554,11 +571,13 @@ export default function Slide4Predictions() {
             </Canvas>
           </div>
           
-          <div className="absolute top-4 left-4 p-4 rounded-xl bg-black/90 backdrop-blur-xl border-2 border-yellow-400/30 shadow-2xl max-w-sm">
-            <p className="text-base font-bold text-yellow-300 mb-3 flex items-center gap-2">
-              <span>🎯</span> Epidemic Growth Simulation
+          <div className="absolute top-2 left-2 md:top-4 md:left-4 p-2 md:p-4 rounded-lg md:rounded-xl bg-black/90 backdrop-blur-xl border md:border-2 border-yellow-400/30 shadow-2xl max-w-[140px] md:max-w-sm">
+            <p className="text-[10px] md:text-base font-bold text-yellow-300 mb-1 md:mb-3 flex items-center gap-1 md:gap-2">
+              <span className="text-sm md:text-base">🎯</span> 
+              <span className="hidden md:inline">Epidemic Growth Simulation</span>
+              <span className="md:hidden">R₀ Analysis</span>
             </p>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-1 md:space-y-2 text-[10px] md:text-sm hidden md:block">
               <div className="flex items-start gap-2">
                 <div className="w-4 h-3 bg-yellow-400/30 border border-yellow-400 rounded mt-0.5"></div>
                 <div>
@@ -600,8 +619,8 @@ export default function Slide4Predictions() {
             )}
           </div>
 
-          <div className="absolute top-4 right-4 p-3 rounded-lg bg-black/60 backdrop-blur-xl border border-white/10">
-            <div className="text-xs text-slate-400 space-y-1">
+          <div className="absolute top-2 right-2 md:top-4 md:right-4 p-1.5 md:p-3 rounded md:rounded-lg bg-black/60 backdrop-blur-xl border border-white/10">
+            <div className="text-[9px] md:text-xs text-slate-400 space-y-0.5 md:space-y-1">
               {activeSection === 'r0' && (
                 <>
                   <div className="flex items-center gap-2">

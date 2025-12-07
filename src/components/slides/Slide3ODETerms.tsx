@@ -83,6 +83,7 @@ export default function Slide3ODETerms() {
   const [activeParam, setActiveParam] = useState<'beta' | 'gamma'>('beta');
   const [betaValue, setBetaValue] = useState(0.0004);
   const [gammaValue, setGammaValue] = useState(0.1);
+  const [isGraphFullscreen, setIsGraphFullscreen] = useState(false);
 
   return (
     <div className="w-full h-screen overflow-hidden flex flex-col bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
@@ -130,12 +131,12 @@ export default function Slide3ODETerms() {
 
       {/* Split Layout - Stack on mobile */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-        {/* Left Panel - Content */}
+        {/* Left Panel - Content - Scrollable on mobile - Hide when fullscreen */}
         <motion.div 
           initial={{ x: -50, opacity: 0 }} 
           animate={{ x: 0, opacity: 1 }} 
           transition={{ delay: 0.2 }}
-          className="w-full md:w-5/12 flex flex-col"
+          className={`w-full md:w-5/12 flex flex-col max-h-[40vh] md:max-h-none ${isGraphFullscreen ? 'hidden md:flex' : ''}`}
         >
           <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-3 md:space-y-4 bg-gradient-to-br from-slate-900/40 to-slate-800/20 backdrop-blur-sm border-b md:border-b-0 md:border-r border-white/5">
             {activeParam === 'beta' ? (
@@ -359,14 +360,17 @@ export default function Slide3ODETerms() {
             </Canvas>
           </div>
           
-          <div className="absolute top-4 left-4 p-4 rounded-xl bg-black/90 backdrop-blur-xl border-2 border-purple-400/30 shadow-2xl max-w-xs">
-            <p className="text-base font-bold mb-2 flex items-center gap-2">
-              <span className="text-2xl">{activeParam === 'beta' ? '🔴' : '🟢'}</span>
-              <span className={activeParam === 'beta' ? 'text-red-300' : 'text-green-300'}>
+          <div className="absolute top-2 left-2 md:top-4 md:left-4 p-2 md:p-4 rounded-lg md:rounded-xl bg-black/90 backdrop-blur-xl border md:border-2 border-purple-400/30 shadow-2xl max-w-[120px] md:max-w-xs">
+            <p className="text-xs md:text-base font-bold mb-1 md:mb-2 flex items-center gap-1 md:gap-2">
+              <span className="text-lg md:text-2xl">{activeParam === 'beta' ? '🔴' : '🟢'}</span>
+              <span className={`hidden md:inline ${activeParam === 'beta' ? 'text-red-300' : 'text-green-300'}`}>
                 {activeParam === 'beta' ? 'Transmission Rate (β)' : 'Recovery Rate (γ)'}
               </span>
+              <span className={`md:hidden text-[10px] ${activeParam === 'beta' ? 'text-red-300' : 'text-green-300'}`}>
+                {activeParam === 'beta' ? 'β Rate' : 'γ Rate'}
+              </span>
             </p>
-            <div className="text-sm text-slate-400 space-y-1.5">
+            <div className="text-[10px] md:text-sm text-slate-400 space-y-0.5 md:space-y-1.5 hidden md:block">
               {activeParam === 'beta' ? (
                 <>
                   <p className="text-slate-300">Shows infection spread rate over time</p>

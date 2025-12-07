@@ -70,6 +70,7 @@ export default function Slide2Models() {
   const [activeModel, setActiveModel] = useState<'sir' | 'sis'>('sir');
   const [betaSlider, setBetaSlider] = useState(0.0004);
   const [gammaSlider, setGammaSlider] = useState(0.1);
+  const [isGraphFullscreen, setIsGraphFullscreen] = useState(false);
 
   // Generate 3D points
   const generate3DData = (beta: number, gamma: number, model: 'sir' | 'sis') => {
@@ -156,12 +157,12 @@ export default function Slide2Models() {
 
       {/* Split Layout - Stack on mobile */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-        {/* Left Panel - Content */}
+        {/* Left Panel - Content - Hide on mobile when fullscreen */}
         <motion.div 
           initial={{ x: -50, opacity: 0 }} 
           animate={{ x: 0, opacity: 1 }} 
           transition={{ delay: 0.2 }}
-          className="w-full md:w-5/12 overflow-y-auto p-4 md:p-6 space-y-3 md:space-y-4 bg-gradient-to-br from-slate-900/40 to-slate-800/20 backdrop-blur-sm border-b md:border-b-0 md:border-r border-white/5"
+          className={`w-full md:w-5/12 overflow-y-auto p-4 md:p-6 space-y-3 md:space-y-4 bg-gradient-to-br from-slate-900/40 to-slate-800/20 backdrop-blur-sm border-b md:border-b-0 md:border-r border-white/5 max-h-[40vh] md:max-h-none ${isGraphFullscreen ? 'hidden md:flex md:flex-col' : ''}`}
         >
           {activeModel === 'sir' ? (
             <>
@@ -310,29 +311,48 @@ export default function Slide2Models() {
           </div>
         </motion.div>
 
-        {/* Right Panel - 3D Visualization */}
+        {/* Right Panel - 3D Visualization - Larger on mobile */}
         <motion.div 
           initial={{ x: 50, opacity: 0 }} 
           animate={{ x: 0, opacity: 1 }} 
           transition={{ delay: 0.3 }}
-          className="flex-1 relative h-64 md:h-auto"
+          className={`flex-1 relative ${isGraphFullscreen ? 'fixed inset-0 z-50 md:relative' : 'min-h-[400px] md:min-h-0 md:h-auto'}`}
         >
+          {/* Fullscreen Toggle Button - Mobile Only */}
+          <button
+            onClick={() => setIsGraphFullscreen(!isGraphFullscreen)}
+            className="md:hidden absolute top-2 right-2 z-20 p-2 rounded-lg bg-cyan-500/90 hover:bg-cyan-600 text-white shadow-lg backdrop-blur"
+          >
+            {isGraphFullscreen ? (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+              </svg>
+            )}
+          </button>
+          
           <div className="absolute top-2 md:top-4 left-2 md:left-4 z-10">
-            <div className="p-3 rounded-xl bg-black/70 backdrop-blur-xl border border-white/10">
-              <p className="text-xs font-semibold text-cyan-300 mb-2">3D Epidemic Curves</p>
-              <div className="flex gap-3 text-xs">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-green-500 shadow-lg shadow-green-500/50"></div>
-                  <span className="text-slate-300">Susceptible</span>
+            <div className="p-2 md:p-3 rounded-lg md:rounded-xl bg-black/70 backdrop-blur-xl border border-white/10">
+              <p className="text-[10px] md:text-xs font-semibold text-cyan-300 mb-1 md:mb-2 hidden md:block">3D Epidemic Curves</p>
+              <div className="flex gap-2 md:gap-3 text-[10px] md:text-xs">
+                <div className="flex items-center gap-1 md:gap-1.5">
+                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-green-500 shadow-lg shadow-green-500/50"></div>
+                  <span className="text-slate-300 hidden sm:inline">Susceptible</span>
+                  <span className="text-slate-300 sm:hidden">S</span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-full bg-red-500 shadow-lg shadow-red-500/50"></div>
-                  <span className="text-slate-300">Infected</span>
+                <div className="flex items-center gap-1 md:gap-1.5">
+                  <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-red-500 shadow-lg shadow-red-500/50"></div>
+                  <span className="text-slate-300 hidden sm:inline">Infected</span>
+                  <span className="text-slate-300 sm:hidden">I</span>
                 </div>
                 {activeModel === 'sir' && (
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-blue-500 shadow-lg shadow-blue-500/50"></div>
-                    <span className="text-slate-300">Recovered</span>
+                  <div className="flex items-center gap-1 md:gap-1.5">
+                    <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-blue-500 shadow-lg shadow-blue-500/50"></div>
+                    <span className="text-slate-300 hidden sm:inline">Recovered</span>
+                    <span className="text-slate-300 sm:hidden">R</span>
                   </div>
                 )}
               </div>
@@ -345,7 +365,7 @@ export default function Slide2Models() {
             <Graph3D data={graphData} model={activeModel} />
           </Canvas>
           
-          <div className="absolute bottom-3 right-3 text-[10px] text-slate-500 bg-black/50 px-2 py-1 rounded backdrop-blur-sm">
+          <div className="absolute bottom-2 md:bottom-3 right-2 md:right-3 text-[8px] md:text-[10px] text-slate-500 bg-black/50 px-1.5 md:px-2 py-0.5 md:py-1 rounded backdrop-blur-sm">
             Drag to rotate • Scroll to zoom
           </div>
         </motion.div>
