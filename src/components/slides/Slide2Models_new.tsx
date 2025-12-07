@@ -116,12 +116,12 @@ export default function Slide2Models() {
       <motion.div 
         initial={{ y: -50, opacity: 0 }} 
         animate={{ y: 0, opacity: 1 }} 
-        className="p-3 bg-black/30 backdrop-blur-2xl border-b border-white/5"
+        className="p-3 md:p-4 bg-black/30 backdrop-blur-2xl border-b border-white/5"
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🦠</span>
-            <h1 className="text-xl font-semibold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
+            <span className="text-xl md:text-2xl">🦠</span>
+            <h1 className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
               Epidemic Models
             </h1>
           </div>
@@ -130,7 +130,7 @@ export default function Slide2Models() {
               whileHover={{ scale: 1.02 }} 
               whileTap={{ scale: 0.98 }} 
               onClick={() => setActiveModel('sir')}
-              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
+              className={`px-3 md:px-4 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all ${
                 activeModel === 'sir' 
                   ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30' 
                   : 'bg-white/5 text-slate-400 hover:bg-white/10'
@@ -142,7 +142,7 @@ export default function Slide2Models() {
               whileHover={{ scale: 1.02 }} 
               whileTap={{ scale: 0.98 }} 
               onClick={() => setActiveModel('sis')}
-              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
+              className={`px-3 md:px-4 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all ${
                 activeModel === 'sis' 
                   ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-500/30' 
                   : 'bg-white/5 text-slate-400 hover:bg-white/10'
@@ -154,14 +154,14 @@ export default function Slide2Models() {
         </div>
       </motion.div>
 
-      {/* Split Layout */}
-      <div className="flex-1 flex overflow-hidden">
+      {/* Split Layout - Stack on mobile */}
+      <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
         {/* Left Panel - Content */}
         <motion.div 
           initial={{ x: -50, opacity: 0 }} 
           animate={{ x: 0, opacity: 1 }} 
           transition={{ delay: 0.2 }}
-          className="w-5/12 overflow-y-auto p-6 space-y-4 bg-gradient-to-br from-slate-900/40 to-slate-800/20 backdrop-blur-sm border-r border-white/5"
+          className="w-full md:w-5/12 overflow-y-auto p-4 md:p-6 space-y-3 md:space-y-4 bg-gradient-to-br from-slate-900/40 to-slate-800/20 backdrop-blur-sm border-b md:border-b-0 md:border-r border-white/5"
         >
           {activeModel === 'sir' ? (
             <>
@@ -315,9 +315,9 @@ export default function Slide2Models() {
           initial={{ x: 50, opacity: 0 }} 
           animate={{ x: 0, opacity: 1 }} 
           transition={{ delay: 0.3 }}
-          className="flex-1 relative"
+          className="flex-1 relative h-64 md:h-auto"
         >
-          <div className="absolute top-4 left-4 z-10">
+          <div className="absolute top-2 md:top-4 left-2 md:left-4 z-10">
             <div className="p-3 rounded-xl bg-black/70 backdrop-blur-xl border border-white/10">
               <p className="text-xs font-semibold text-cyan-300 mb-2">3D Epidemic Curves</p>
               <div className="flex gap-3 text-xs">

@@ -88,12 +88,12 @@ export default function Home() {
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="absolute top-6 left-0 right-0 text-center z-20 pointer-events-none"
+            className="absolute top-4 md:top-6 left-0 right-0 text-center z-20 pointer-events-none px-4"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-3 bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-500 bg-clip-text text-transparent drop-shadow-2xl">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-3 bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-500 bg-clip-text text-transparent drop-shadow-2xl">
               Mathematical World of Virus Modeling
             </h1>
-            <p className="text-lg text-cyan-200 max-w-3xl mx-auto font-medium drop-shadow-lg">
+            <p className="text-sm sm:text-base md:text-lg text-cyan-200 max-w-3xl mx-auto font-medium drop-shadow-lg">
               Navigate the 3D digital realm where mathematics meets cybersecurity
             </p>
           </motion.div>
@@ -168,20 +168,20 @@ export default function Home() {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="absolute bottom-12 left-0 right-0 z-20 pointer-events-none"
+            className="absolute bottom-4 md:bottom-12 left-0 right-0 z-20 pointer-events-none px-4"
           >
-            <div className="flex justify-center gap-8 text-cyan-300">
-              <div className="flex items-center gap-3 bg-slate-950/70 backdrop-blur-xl px-6 py-3 rounded-full border border-cyan-500/30">
-                <span className="text-3xl">🔄</span>
-                <span className="text-lg font-medium">Drag to rotate</span>
+            <div className="flex flex-col sm:flex-row justify-center gap-2 sm:gap-4 md:gap-8 text-cyan-300">
+              <div className="flex items-center gap-2 md:gap-3 bg-slate-950/70 backdrop-blur-xl px-3 sm:px-4 md:px-6 py-2 md:py-3 rounded-full border border-cyan-500/30">
+                <span className="text-xl md:text-3xl">🔄</span>
+                <span className="text-xs sm:text-sm md:text-lg font-medium">Drag to rotate</span>
               </div>
-              <div className="flex items-center gap-3 bg-slate-950/70 backdrop-blur-xl px-6 py-3 rounded-full border border-purple-500/30">
-                <span className="text-3xl">🔍</span>
-                <span className="text-lg font-medium">Scroll to zoom</span>
+              <div className="flex items-center gap-2 md:gap-3 bg-slate-950/70 backdrop-blur-xl px-3 sm:px-4 md:px-6 py-2 md:py-3 rounded-full border border-purple-500/30">
+                <span className="text-xl md:text-3xl">🔍</span>
+                <span className="text-xs sm:text-sm md:text-lg font-medium">Scroll to zoom</span>
               </div>
-              <div className="flex items-center gap-3 bg-slate-950/70 backdrop-blur-xl px-6 py-3 rounded-full border border-blue-500/30">
-                <span className="text-3xl">👆</span>
-                <span className="text-lg font-medium">Click nodes to explore</span>
+              <div className="flex items-center gap-2 md:gap-3 bg-slate-950/70 backdrop-blur-xl px-3 sm:px-4 md:px-6 py-2 md:py-3 rounded-full border border-blue-500/30">
+                <span className="text-xl md:text-3xl">👆</span>
+                <span className="text-xs sm:text-sm md:text-lg font-medium">Click nodes to explore</span>
               </div>
             </div>
           </motion.div>
@@ -201,9 +201,9 @@ export default function Home() {
             initial={{ x: -100 }}
             animate={{ x: 0 }}
             onClick={handleBackToMap}
-            className="absolute bottom-8 left-6 z-50 flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900/95 hover:bg-slate-800/95 border-2 border-cyan-400/50 hover:border-cyan-400 backdrop-blur-xl transition-all shadow-2xl shadow-cyan-500/20 text-sm"
+            className="absolute bottom-4 md:bottom-8 left-3 md:left-6 z-50 flex items-center gap-1 md:gap-2 px-3 md:px-5 py-2 md:py-2.5 rounded-full bg-slate-900/95 hover:bg-slate-800/95 border-2 border-cyan-400/50 hover:border-cyan-400 backdrop-blur-xl transition-all shadow-2xl shadow-cyan-500/20 text-xs md:text-sm"
           >
-            <span className="text-xl">🗺️</span>
+            <span className="text-lg md:text-xl">🗺️</span>
             <span className="font-semibold">Back to Map</span>
           </motion.button>
 
@@ -214,15 +214,15 @@ export default function Home() {
           })()}
 
           {/* Navigation Arrows */}
-          <div className="absolute bottom-8 right-8 z-50 flex gap-4">
+          <div className="absolute bottom-4 md:bottom-8 right-3 md:right-8 z-50 flex gap-2 md:gap-4">
             {selectedSlide > 0 && (
               <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 onClick={() => setSelectedSlide(selectedSlide - 1)}
-                className="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur flex items-center justify-center transition-all"
+                className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur flex items-center justify-center transition-all"
               >
-                <span className="text-2xl">←</span>
+                <span className="text-lg md:text-2xl">←</span>
               </motion.button>
             )}
             {selectedSlide < SLIDE_CONFIG.length - 1 && (
@@ -230,9 +230,9 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 onClick={() => setSelectedSlide(selectedSlide + 1)}
-                className="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur flex items-center justify-center transition-all"
+                className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 backdrop-blur flex items-center justify-center transition-all"
               >
-                <span className="text-2xl">→</span>
+                <span className="text-lg md:text-2xl">→</span>
               </motion.button>
             )}
           </div>
